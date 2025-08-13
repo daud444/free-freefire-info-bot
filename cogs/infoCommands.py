@@ -187,96 +187,78 @@ class InfoCommands(commands.Cog):
 
             region = basic_info.get('region', 'Not found')
 
-           embed = discord.Embed(
-    title="🎮 Player Information",
-    color=discord.Color.blurple(),
-    timestamp=datetime.now()
-)
-embed.set_thumbnail(url=ctx.author.display_avatar.url)
+          embed = discord.Embed(
+                title=" Player Information",
+                color=discord.Color.blurple(),
+                timestamp=datetime.now()
+            )
+            embed.set_thumbnail(url=ctx.author.display_avatar.url)
 
-# Account Basic Info
-embed.add_field(
-    name="📝 BASIC INFORMATION",
-    value="\n".join([
-        f"• **Name**: {basic_info.get('nickname', 'Not found')}",
-        f"• **UID**: `{uid}`",
-        f"• **Level**: {basic_info.get('level', 'Not found')} (Exp: {basic_info.get('exp', '?')})",
-        f"• **Region**: {region}",
-        f"• **Likes**: ❤️ {basic_info.get('liked', 'Not found')}",
-        f"• **Honor Score**: ⭐ {credit_score_info.get('creditScore', 'Not found')}",
-        f"• **Signature**: 📜 {social_info.get('signature', 'None') or 'None'}"
-    ]),
-    inline=True
-)
+            embed.add_field(name="", value="\n".join([
+                "**┌  ACCOUNT BASIC INFO**",
+                f"**├─ Name**: {basic_info.get('nickname', 'Not found')}",
+                f"**├─ UID**: `{uid}`",
+                f"**├─ Level**: {basic_info.get('level', 'Not found')} (Exp: {basic_info.get('exp', '?')})",
+                f"**├─ Region**: {region}",
+                f"**├─ Likes**: {basic_info.get('liked', 'Not found')}",
+                f"**├─ Honor Score**: {credit_score_info.get('creditScore', 'Not found')}",
+                f"**└─ Signature**: {social_info.get('signature', 'None') or 'None'}"
+            ]), inline=False)
+          
 
-# Account Activity
-embed.add_field(
-    name="🕹️ ACCOUNT ACTIVITY",
-    value="\n".join([
-        f"• **Version**: {basic_info.get('releaseVersion', '?')}",
-        f"• **BP Badges**: 🏅 {basic_info.get('badgeCnt', 'Not found')}",
-        f"• **BR Rank**: {'🟢' if basic_info.get('showBrRank') else '🔴'} {basic_info.get('rankingPoints', '?')}",
-        f"• **CS Rank**: {'🟢' if basic_info.get('showCsRank') else '🔴'} {basic_info.get('csRankingPoints', '?')}",
-        f"• **Created**: 🗓️ {self.convert_unix_timestamp(int(basic_info.get('createAt', 'Not found')))}",
-        f"• **Last Login**: ⏱️ {self.convert_unix_timestamp(int(basic_info.get('lastLoginAt', 'Not found')))}"
-    ]),
-    inline=True
-)
+            embed.add_field(name="", value="\n".join([
+                "**┌  ACCOUNT ACTIVITY**",
+                f"**├─ Most Recent OB**: {basic_info.get('releaseVersion', '?')}",
+                f"**├─ Current BP Badges**: {basic_info.get('badgeCnt', 'Not found')}",
+                f"**├─ BR Rank**: {'' if basic_info.get('showBrRank') else 'Not found'} {basic_info.get('rankingPoints', '?')}",
+                f"**├─ CS Rank**: {'' if basic_info.get('showCsRank') else 'Not found'} {basic_info.get('csRankingPoints', '?')} ",
+                f"**├─ Created At**: {self.convert_unix_timestamp(int(basic_info.get('createAt', 'Not found')))}",
+                f"**└─ Last Login**: {self.convert_unix_timestamp(int(basic_info.get('lastLoginAt', 'Not found')))}"
 
-# Account Overview
-embed.add_field(
-    name="📊 ACCOUNT OVERVIEW",
-    value="\n".join([
-        f"• **Avatar ID**: 👤 {profile_info.get('avatarId', 'Not found')}",
-        f"• **Banner ID**: 🏞️ {basic_info.get('bannerId', 'Not found')}",
-        f"• **Pin ID**: 📌 {captain_info.get('pinId', 'Not found') if captain_info else 'Default'}",
-        f"• **Equipped Skills**: ⚔️ {profile_info.get('equipedSkills', 'Not found')}"
-    ]),
-    inline=False
-)
+            ]), inline=False)
 
-# Pet Details
-embed.add_field(
-    name="🐾 PET DETAILS",
-    value="\n".join([
-        f"• **Equipped**: {'✅ Yes' if pet_info.get('isSelected') else '❌ Not Found'}",
-        f"• **Name**: {pet_info.get('name', 'Not Found')}",
-        f"• **Exp**: {pet_info.get('exp', 'Not Found')}",
-        f"• **Level**: {pet_info.get('level', 'Not Found')}"
-    ]),
-    inline=True
-)
+            embed.add_field(name="", value="\n".join([
+                "**┌  ACCOUNT OVERVIEW**",
+                f"**├─ Avatar ID**: {profile_info.get('avatarId', 'Not found')}",
+                f"**├─ Banner ID**: {basic_info.get('bannerId', 'Not found')}",
+                f"**├─ Pin ID**: {captain_info.get('pinId', 'Not found') if captain_info else 'Default'}",
+                f"**└─ Equipped Skills**: {profile_info.get('equipedSkills', 'Not found')}"
+            ]), inline=False)
 
-# Guild Info (if available)
-if clan_info:
-    guild_info = [
-        f"• **Guild Name**: 🏰 {clan_info.get('clanName', 'Not found')}",
-        f"• **Guild ID**: `{clan_info.get('clanId', 'Not found')}`",
-        f"• **Guild Level**: {clan_info.get('clanLevel', 'Not found')}",
-        f"• **Members**: 👥 {clan_info.get('memberNum', 'Not found')}/{clan_info.get('capacity', '?')}"
-    ]
-    
-    if captain_info:
-        guild_info.extend([
-            "\n**👑 LEADER INFO**",
-            f"• **Name**: {captain_info.get('nickname', 'Not found')}",
-            f"• **UID**: `{captain_info.get('accountId', 'Not found')}`",
-            f"• **Level**: {captain_info.get('level', 'Not found')} (Exp: {captain_info.get('exp', '?')})",
-            f"• **Last Login**: {self.convert_unix_timestamp(int(captain_info.get('lastLoginAt', 'Not found')))}",
-            f"• **Title**: {captain_info.get('title', 'Not found')}",
-            f"• **BP Badges**: {captain_info.get('badgeCnt', '?')}",
-            f"• **BR Rank**: {'🟢' if captain_info.get('showBrRank') else '🔴'} {captain_info.get('rankingPoints', 'Not found')}",
-            f"• **CS Rank**: {'🟢' if captain_info.get('showCsRank') else '🔴'} {captain_info.get('csRankingPoints', 'Not found')}"
-        ])
-    
-    embed.add_field(
-        name="⚔️ GUILD INFORMATION",
-        value="\n".join(guild_info),
-        inline=True
-    )
+            embed.add_field(name="", value="\n".join([
+                "**┌  PET DETAILS**",
+                f"**├─ Equipped?**: {'Yes' if pet_info.get('isSelected') else 'Not Found'}",
+                f"**├─ Pet Name**: {pet_info.get('name', 'Not Found')}",
+                f"**├─ Pet Exp**: {pet_info.get('exp', 'Not Found')}",
+                f"**└─ Pet Level**: {pet_info.get('level', 'Not Found')}"
+            ]), inline=False)
 
-embed.set_footer(text="Developed by MACRO TRACKING CHEAT • Data fetched")
-await ctx.send(embed=embed)
+            if clan_info:
+                guild_info = [
+                    "**┌  GUILD INFO**",
+                    f"**├─ Guild Name**: {clan_info.get('clanName', 'Not found')}",
+                    f"**├─ Guild ID**: `{clan_info.get('clanId', 'Not found')}`",
+                    f"**├─ Guild Level**: {clan_info.get('clanLevel', 'Not found')}",
+                    f"**├─ Live Members**: {clan_info.get('memberNum', 'Not found')}/{clan_info.get('capacity', '?')}"
+                ]
+                if captain_info:
+                    guild_info.extend([
+                        "**└─ Leader Info**:",
+                        f"    **├─ Leader Name**: {captain_info.get('nickname', 'Not found')}",
+                        f"    **├─ Leader UID**: `{captain_info.get('accountId', 'Not found')}`",
+                        f"    **├─ Leader Level**: {captain_info.get('level', 'Not found')} (Exp: {captain_info.get('exp', '?')})",
+                        f"    **├─ Last Login**: {self.convert_unix_timestamp(int(captain_info.get('lastLoginAt', 'Not found')))}",
+                        f"    **├─ Title**: {captain_info.get('title', 'Not found')}",
+                        f"    **├─ BP Badges**: {captain_info.get('badgeCnt', '?')}",
+                        f"    **├─ BR Rank**: {'' if captain_info.get('showBrRank') else 'Not found'} {captain_info.get('rankingPoints', 'Not found')}",
+                        f"    **└─ CS Rank**: {'' if captain_info.get('showCsRank') else 'Not found'} {captain_info.get('csRankingPoints', 'Not found')} "
+                    ])
+                embed.add_field(name="", value="\n".join(guild_info), inline=False)
+
+
+
+            embed.set_footer(text="DEVELOPED BY MACRO TRACKIG CHEAT")
+            await ctx.send(embed=embed)   
             if region and uid:
                 try:
                     image_url = f"{self.generate_url}?uid={uid}"
