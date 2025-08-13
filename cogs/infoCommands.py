@@ -187,12 +187,7 @@ class InfoCommands(commands.Cog):
 
             region = basic_info.get('region', 'Not found')
 
-            embed = discord.Embed(
-                title=" Player Information",
-                color=discord.Color.blurple(),
-                timestamp=datetime.now()
-            )
-         embed = discord.Embed(
+           embed = discord.Embed(
     title="🎮 Player Information",
     color=discord.Color.blurple(),
     timestamp=datetime.now()
@@ -282,7 +277,6 @@ if clan_info:
 
 embed.set_footer(text="Developed by MACRO TRACKING CHEAT • Data fetched")
 await ctx.send(embed=embed)
-
             if region and uid:
                 try:
                     image_url = f"{self.generate_url}?uid={uid}"
